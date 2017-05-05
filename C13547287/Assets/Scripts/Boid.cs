@@ -28,12 +28,10 @@ public class Boid : MonoBehaviour
 
     void OrbitWithoutSeek()
     {
-
         theta += Time.deltaTime * maxSpeed;
 
         Vector3 target = new Vector3(Mathf.Sin(theta), transform.position.y, -Mathf.Cos(theta));
         target *= radius;
-
         transform.position = target;
     }
 
