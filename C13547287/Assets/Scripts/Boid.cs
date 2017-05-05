@@ -8,11 +8,14 @@ public class Boid : MonoBehaviour
 
     public float theta, radius;
 
+    private float wanderNoise;
+
 	void Start ()
     {
-		
-	}
+        wanderNoise = Random.Range(0, 1000);
+    }
 
+    // Not working
     public Vector3 Orbit()
     {
         theta += Time.deltaTime;
@@ -44,8 +47,25 @@ public class Boid : MonoBehaviour
 
     Vector3 Wander()
     {
+        float range = Mathf.PI / 2.0f;
+        float radius = 100.0f;
+        float distance = 5.0f;
 
-        return Vector3.zero;
+        Vector3 targetPosition = Vector3.zero;
+
+        float n = Mathf.PerlinNoise(wanderNoise, 0.0f);
+        float t = Map(n, 0.0f, 1.0f, Mathf.PI - range, Mathf.PI + range);
+
+        targetPosition.x = Mathf.Sin(t);
+        targetPosition.y = 0;
+        targetPosition.z = -Mathf.Cos(t);
+        targetPosition *= radius;
+
+        targetPosition += Vector3.forward * distance;
+
+        wanderNoise += Time.deltaTime * 0.2f;
+
+        return Seek(targetPosition);
     }
 	
 	void Update ()
@@ -53,7 +73,7 @@ public class Boid : MonoBehaviour
         OrbitWithoutSeek();
 
         force = Vector3.zero;
-        // force += Orbit();
+        force += Wander();
 
         float smoothAccelerationRate = Mathf.Clamp(9.0f * Time.deltaTime, 0.15f, 0.4f) / 2.0f;
         acceleration = Vector3.Lerp(acceleration, force, smoothAccelerationRate);
@@ -76,4 +96,12 @@ public class Boid : MonoBehaviour
 
         transform.position += velocity * Time.deltaTime;
 	}
+
+    static float Map(float value, float sourceMin, float sourceMax, float targetMin, float targetMax)
+    {
+        float distance = value - sourceMin;
+        float sourceRange = sourceMax - sourceMin;
+        float targetRange = targetMax - targetMin;
+        return targetMin + ((distance / sourceRange) * targetRange);
+    }
 }
