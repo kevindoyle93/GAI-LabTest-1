@@ -39,8 +39,7 @@ public class Atom : MonoBehaviour
             Boid electron = e.GetComponent<Boid>();
             electron.radius = radius;
             electron.theta = theta;
-            electron.thetaInc = thetaInc;
-            electron.speed = electronBaseSpeed + ((shellNumber - 1) * electronBaseSpeed * (shellOffset * 1.5f));
+            electron.maxSpeed = electronBaseSpeed + ((shellNumber - 1) * electronBaseSpeed * (shellOffset));
 
             theta += thetaInc;
         }
