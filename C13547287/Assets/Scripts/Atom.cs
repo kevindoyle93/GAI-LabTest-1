@@ -9,11 +9,15 @@ public class Atom : MonoBehaviour
     public GameObject protonPrefab;
     public GameObject electronPrefab;
 
-    public int shellOffset = 15;
+    public int shellOffset = 3;
+    public int electronBaseSpeed = 3;
+
+    private GameObject proton;
+    private List<GameObject> electrons = new List<GameObject>();
 
 	void Start ()
     {
-        Instantiate(protonPrefab);
+        proton = Instantiate(protonPrefab);
 
         string[] electrons = electronsPerShell.Split(',');
         for (int i = 0; i < electrons.Length; i++)
@@ -33,7 +37,14 @@ public class Atom : MonoBehaviour
         {
             Vector3 position = new Vector3(Mathf.Sin(theta), transform.position.y, -Mathf.Cos(theta));
             position *= radius;
-            Instantiate(electronPrefab, position, transform.rotation);
+
+            GameObject e = Instantiate(electronPrefab, position, transform.rotation);
+            Electron electron = e.AddComponent<Electron>();
+            electron.speed = electronBaseSpeed + ((shellNumber - 1) * electronBaseSpeed * (shellOffset * 1.5f));
+            electron.radius = radius;
+            electron.theta = theta;
+            electron.thetaInc = thetaInc;
+            electrons.Add(e);
 
             theta += thetaInc;
         }
@@ -41,6 +52,6 @@ public class Atom : MonoBehaviour
 	
 	void Update ()
     {
-		
+        	
 	}
 }
