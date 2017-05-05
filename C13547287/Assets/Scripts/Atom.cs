@@ -12,12 +12,9 @@ public class Atom : MonoBehaviour
     public int shellOffset = 3;
     public float electronBaseSpeed = 3;
 
-    private GameObject proton;
-    private List<GameObject> electrons = new List<GameObject>();
-
 	void Start ()
     {
-        proton = Instantiate(protonPrefab);
+        Instantiate(protonPrefab);
 
         string[] electrons = electronsPerShell.Split(',');
         for (int i = 0; i < electrons.Length; i++)
@@ -39,12 +36,10 @@ public class Atom : MonoBehaviour
             position *= radius;
 
             GameObject e = Instantiate(electronPrefab, position, transform.rotation);
-            Electron electron = e.AddComponent<Electron>();
-            electron.speed = electronBaseSpeed + ((shellNumber - 1) * electronBaseSpeed * (shellOffset * 1.5f));
+            Boid electron = e.GetComponent<Boid>();
             electron.radius = radius;
             electron.theta = theta;
-            electron.thetaInc = thetaInc;
-            electrons.Add(e);
+            electron.maxSpeed = electronBaseSpeed + ((shellNumber - 1) * electronBaseSpeed * (shellOffset));
 
             theta += thetaInc;
         }
