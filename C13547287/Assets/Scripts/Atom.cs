@@ -10,7 +10,7 @@ public class Atom : MonoBehaviour
     public GameObject electronPrefab;
 
     public int shellOffset = 3;
-    public int electronBaseSpeed = 3;
+    public float electronBaseSpeed = 3;
 
     private GameObject proton;
     private List<GameObject> electrons = new List<GameObject>();
