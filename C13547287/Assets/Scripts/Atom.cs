@@ -18,6 +18,7 @@ public class Atom : MonoBehaviour
     {
         proton = Instantiate(protonPrefab, transform);
         proton.transform.position = transform.position;
+        proton.GetComponentInChildren<TextMesh>().text = atom + "\n" + electronsPerShell;
 
         string[] electrons = electronsPerShell.Split(',');
         for (int i = 0; i < electrons.Length; i++)
