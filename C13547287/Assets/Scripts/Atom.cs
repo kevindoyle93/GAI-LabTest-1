@@ -10,7 +10,7 @@ public class Atom : MonoBehaviour
 
 	void Start ()
     {
-		
+        Instantiate(protonPrefab);
 	}
 	
 	void Update ()
